@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="25sp"
+        android:layout_marginTop="250dp"
         android:text="FREQUENCY"/>
 
     <TextView
@@ -23,5 +24,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="25sp"
+        android:layout_marginTop="25dp"
         android:text="NOTE"/>
 </LinearLayout>
