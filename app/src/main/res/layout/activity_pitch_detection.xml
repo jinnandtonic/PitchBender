@@ -26,4 +26,10 @@
         android:textSize="50sp"
         android:layout_marginTop="25dp"
         android:text="NOTE"/>
+
+    <Button
+        android:onClick="getNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GET NOTE"/>
 </LinearLayout>

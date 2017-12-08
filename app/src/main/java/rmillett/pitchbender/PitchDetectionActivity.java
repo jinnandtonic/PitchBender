@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,15 +26,29 @@ public class PitchDetectionActivity extends AppCompatActivity {
     private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
     private static final int DENIED = PackageManager.PERMISSION_DENIED;
 
+    private double frequencyAverage;
+    private int collectionLimit;
+    private int collectionCounter;
+
+    private float mFreq;
+
     private TextView pitchText;
     private TextView noteText;
+
+    Thread audioThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pitch_detection);
 
+        frequencyAverage = 0;
+        collectionCounter = 0;
+        collectionLimit = 50;
+
         List<String> permsList = new ArrayList<>();
+
+
 
         int hasAudioPerm = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         if (hasAudioPerm == DENIED) permsList.add(Manifest.permission.RECORD_AUDIO);
@@ -72,7 +88,8 @@ public class PitchDetectionActivity extends AppCompatActivity {
             AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
             dispatcher.addAudioProcessor(pitchProcessor);
 
-            Thread audioThread = new Thread(dispatcher, "Audio Thread");
+
+            audioThread = new Thread(dispatcher, "Audio Thread");
             audioThread.start();
         }
     }
@@ -81,35 +98,56 @@ public class PitchDetectionActivity extends AppCompatActivity {
 
         pitchText.setText("" + pitchInHz);
 
-        if(pitchInHz >= 110 && pitchInHz < 123.47) {
-            //A
-            noteText.setText("A");
+
+        if (pitchInHz > 0 && collectionCounter < collectionLimit) {
+            frequencyAverage += pitchInHz;
+            collectionCounter++;
         }
-        else if(pitchInHz >= 123.47 && pitchInHz < 130.81) {
-            //B
-            noteText.setText("B");
-        }
-        else if(pitchInHz >= 130.81 && pitchInHz < 146.83) {
-            //C
-            noteText.setText("C");
-        }
-        else if(pitchInHz >= 146.83 && pitchInHz < 164.81) {
-            //D
-            noteText.setText("D");
-        }
-        else if(pitchInHz >= 164.81 && pitchInHz <= 174.61) {
-            //E
-            noteText.setText("E");
-        }
-        else if(pitchInHz >= 174.61 && pitchInHz < 185) {
-            //F
-            noteText.setText("F");
-        }
-        else if(pitchInHz >= 185 && pitchInHz < 196) {
-            //G
-            noteText.setText("G");
+
+        Log.i("PD Act", "collectionCounter->" + collectionCounter);
+
+
+        if (collectionCounter >= collectionLimit) {
+            pitchInHz = (float) frequencyAverage / collectionLimit;
+            mFreq = pitchInHz;
+
+            Log.i("PD Act", "pitchInHz->" + pitchInHz);
+
+//            if(pitchInHz >= 110 && pitchInHz < 123.47) {
+//                //A
+//                noteText.setText("A");
+//            }
+//            else if(pitchInHz >= 123.47 && pitchInHz < 130.81) {
+//                //B
+//                noteText.setText("B");
+//            }
+//            else if(pitchInHz >= 130.81 && pitchInHz < 146.83) {
+//                //C
+//                noteText.setText("C");
+//            }
+//            else if(pitchInHz >= 146.83 && pitchInHz < 164.81) {
+//                //D
+//                noteText.setText("D");
+//            }
+//            else if(pitchInHz >= 164.81 && pitchInHz <= 174.61) {
+//                //E
+//                noteText.setText("E");
+//            }
+//            else if(pitchInHz >= 174.61 && pitchInHz < 185) {
+//                //F
+//                noteText.setText("F");
+//            }
+//            else if(pitchInHz >= 185 && pitchInHz < 196) {
+//                //G
+//                noteText.setText("G");
+//            }
         }
     }
 
 
+    public void getNote(View view) {
+        if (collectionCounter >= collectionLimit) {
+            noteText.setText(Music.parsePitchClassFromFrequency(mFreq));
+        }
+    }
 }
