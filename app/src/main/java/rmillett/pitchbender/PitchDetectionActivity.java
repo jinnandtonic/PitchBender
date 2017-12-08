@@ -144,7 +144,6 @@ public class PitchDetectionActivity extends AppCompatActivity {
         }
     }
 
-
     public void getNote(View view) {
         if (collectionCounter >= collectionLimit) {
             noteText.setText(Music.parsePitchClassFromFrequency(mFreq));
