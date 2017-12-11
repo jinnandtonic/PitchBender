@@ -1,5 +1,7 @@
 package rmillett.pitchbender;
 
+import android.util.Log;
+
 /**
  * The <code>Music</code> class is a helper class which functions as multipurpose tool for performing
  * acoustic-/music-related calculations and conversions such as parsing ratios, converting to and from
@@ -264,8 +266,9 @@ public class Music {
 //                0, _12_TET_PITCH_FREQUENCIES.length);
 
         int i = -1;
-        for (int j = 0; j < freqArray.length; ++i) {
+        for (int j = 0; j < freqArray.length; ++j) {
             // finds approx range without going over
+            Log.i(TAG, "j->" + j);
             if (frequencyInHz >= freqArray[j]
                     && frequencyInHz < freqArray[j+1]) {
                 i = j;

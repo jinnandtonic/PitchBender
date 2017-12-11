@@ -150,9 +150,9 @@ public class PitchDetectionActivity extends AppCompatActivity {
         String note = "None";
         Log.i("PD Act", "before->" + note);
         if (collectionCounter >= 0) {
-            note = Music.parsePitchClassFromFrequency(440.0, Music._12_TET_PITCH_FREQUENCIES);
+            note = Music.parsePitchClassFromFrequency(mFreq, Music._12_TET_PITCH_FREQUENCIES);
             noteText.setText(note);
         }
-        Log.i("PD Act", "before->" + note);
+        Log.i("PD Act", "after->" + note);
     }
 }
