@@ -104,14 +104,16 @@ public class PitchDetectionActivity extends AppCompatActivity {
             collectionCounter++;
         }
 
-        Log.i("PD Act", "collectionCounter->" + collectionCounter);
+        if (collectionCounter <= collectionLimit) {
+            //Log.i("PD Act", "collectionCounter->" + collectionCounter);
+        }
 
 
         if (collectionCounter >= collectionLimit) {
             pitchInHz = (float) frequencyAverage / collectionLimit;
             mFreq = pitchInHz;
 
-            Log.i("PD Act", "pitchInHz->" + pitchInHz);
+            //Log.i("PD Act", "pitchInHz->" + pitchInHz);
 
 //            if(pitchInHz >= 110 && pitchInHz < 123.47) {
 //                //A
@@ -145,8 +147,12 @@ public class PitchDetectionActivity extends AppCompatActivity {
     }
 
     public void getNote(View view) {
-        if (collectionCounter >= collectionLimit) {
-            noteText.setText(Music.parsePitchClassFromFrequency(mFreq));
+        String note = "None";
+        Log.i("PD Act", "before->" + note);
+        if (collectionCounter >= 0) {
+            note = Music.parsePitchClassFromFrequency(440.0, Music._12_TET_PITCH_FREQUENCIES);
+            noteText.setText(note);
         }
+        Log.i("PD Act", "before->" + note);
     }
 }
