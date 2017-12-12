@@ -104,9 +104,9 @@ public class PitchDetectionActivity extends AppCompatActivity {
             collectionCounter++;
         }
 
-        if (collectionCounter <= collectionLimit) {
-            //Log.i("PD Act", "collectionCounter->" + collectionCounter);
-        }
+//        if (collectionCounter <= collectionLimit) {
+//            //Log.i("PD Act", "collectionCounter->" + collectionCounter);
+//        }
 
 
         if (collectionCounter >= collectionLimit) {
